@@ -1,7 +1,7 @@
 # terraform Avi LSC VS
 
 ## Goals
-Configure a health Monitor, Pool and VS through Terraform (via Avi provider)
+Configure a Health Monitor, Pool and VS through Terraform (via Avi provider)
 
 ## Prerequisites:
 1. Make sure terraform is installed
@@ -45,7 +45,7 @@ avi@ansible:~/terraform/aviLscVs$ more creds.tfvars.json
 avi@ansible:~/terraform/aviLscVs$
 ```
 
-2. All the other paramaters/variables are stored in variables.tf. The following parameters needs to be changed:
+2. All the other paramaters/variables are stored in variables.tf. The following parameters need to be changed:
 
 ```
 #### Pool variables
@@ -90,8 +90,8 @@ variable "VsFqdn" {
 ```
 
 ## Use the the terraform script to:
-1. Create a health Monitor
-2. Create a pool (with 2 backend servers)
+1. Create a Health Monitor
+2. Create a Pool (with 2 backend servers)
 3. Create a VS based on Avi IPAM and DNS
 
 ## Run the terraform:
