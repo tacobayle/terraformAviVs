@@ -104,25 +104,13 @@ variable "application_profile1" {
 }
 
 variable "vsName" {
-  default = "tfVs"
-}
-
-variable "vsNetwork" {
-  default = "net-avi"
-}
-
-variable "vsMask" {
-  default = "24"
-}
-
-variable "vsCidr" {
-  default = "10.1.2.0"
+  default = "tfApp"
 }
 
 variable "vsP" {
   default = "443"
 }
 
-variable "VsFqdn" {
-  default = "tfVs.demoavi.local"
+variable "vsSsl" {
+  default = "true"
 }

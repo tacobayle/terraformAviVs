@@ -1,8 +1,8 @@
-output "log1" {
+output "aviCreds" {
   value = var.avi_credentials
 }
 
-output "log2" {
+output "aviTenant" {
   value = var.avi_tenant
 }
 
@@ -26,6 +26,41 @@ data "avi_networkprofile" "network_profile1" {
   name = var.network_profile
 }
 
+data "avi_ipamdnsproviderprofile" "dns" {
+    name = "dns-avi"
+}
+
+output "domaineName" {
+  value = tolist(data.avi_ipamdnsproviderprofile.dns.internal_profile)[0].dns_service_domain[0].domain_name
+}
+
+data "avi_ipamdnsproviderprofile" "ipam" {
+    name = "ipam-avi"
+}
+
+output "networkUuid" {
+  value = split("/network/", tolist(data.avi_ipamdnsproviderprofile.ipam.internal_profile)[0].usable_network_refs[0])[1]
+}
+
+data "avi_network" "network" {
+    uuid = split("/network/", tolist(data.avi_ipamdnsproviderprofile.ipam.internal_profile)[0].usable_network_refs[0])[1]
+}
+
+output "networkaddr" {
+  value = tolist(tolist(tolist(data.avi_network.network.configured_subnets)[0].prefix)[0].ip_addr)[0].addr
+}
+
+output "networktype" {
+  value = tolist(tolist(tolist(data.avi_network.network.configured_subnets)[0].prefix)[0].ip_addr)[0].type
+}
+
+output "networkmask" {
+  value = tolist(tolist(data.avi_network.network.configured_subnets)[0].prefix)[0].mask
+}
+
+output "networkName" {
+  value = data.avi_network.network.name
+}
 
 resource "avi_healthmonitor" "hm" {
   name = var.hmHttpName
@@ -68,20 +103,20 @@ resource "avi_virtualservice" "https_vs" {
   pool_ref = avi_pool.lbpool.id
   tenant_ref = "/api/tenant/?name=${var.avi_tenant}"
   vip {
-    auto_allocate_ip= true
+    auto_allocate_ip = true
     ipam_network_subnet {
-      network_ref = "/api/network/?name=${var.vsNetwork}"
+      network_ref = "/api/network/?name=${data.avi_network.network.name}"
       subnet {
-        mask = var.vsMask
+        mask = tolist(tolist(data.avi_network.network.configured_subnets)[0].prefix)[0].mask
         ip_addr {
-          type = "V4"
-          addr = var.vsCidr
+          type = tolist(tolist(tolist(data.avi_network.network.configured_subnets)[0].prefix)[0].ip_addr)[0].type
+          addr = tolist(tolist(tolist(data.avi_network.network.configured_subnets)[0].prefix)[0].ip_addr)[0].addr
         }
       }
     }
   }
   dns_info {
-    fqdn = var.VsFqdn
+    fqdn = "${var.vsName}.${tolist(data.avi_ipamdnsproviderprofile.dns.internal_profile)[0].dns_service_domain[0].domain_name}"
   }
   ssl_key_and_certificate_refs = [data.avi_sslkeyandcertificate.ssl_cert1.id]
   ssl_profile_ref = data.avi_sslprofile.ssl_profile1.id
@@ -89,6 +124,6 @@ resource "avi_virtualservice" "https_vs" {
   network_profile_ref = data.avi_networkprofile.network_profile1.id
   services {
     port           = var.vsP
-    enable_ssl     = true
+    enable_ssl     = var.vsSsl
   }
 }

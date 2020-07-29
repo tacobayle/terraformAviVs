@@ -1,4 +1,4 @@
-# terraform Avi LSC VS
+# terraform Avi VS
 
 ## Goals
 Configure a Health Monitor, Pool and VS through Terraform (via Avi provider)
@@ -6,6 +6,7 @@ Configure a Health Monitor, Pool and VS through Terraform (via Avi provider)
 ## Prerequisites:
 1. Make sure terraform is installed
 2. Make sure your Avi Controller is reachable from your terraform host
+3. Make sure you have an IPAM/DNS profile is configured
 
 ## Environment:
 
@@ -52,12 +53,12 @@ avi@ansible:~/terraform/aviLscVs$
 
 variable "poolServer1" {
   type    = string
-  default = "a.b.c.d"
+  default = "172.16.3.252"
 }
 
 variable "poolServer2" {
   type    = string
-  default = "a.b.c.d"
+  default = "172.16.3.253"
 }
 
 variable "poolPort" {
@@ -68,24 +69,16 @@ variable "poolPort" {
 
 #### VS variables
 
-variable "vsNetwork" {
-  default = "myNetworkName"
-}
-
-variable "vsMask" {
-  default = "24"
-}
-
-variable "vsCidr" {
-  default = "a.b.c.d"
+variable "vsName" {
+  default = "tfApp"
 }
 
 variable "vsP" {
-  default = "myVsPort"
+  default = "443"
 }
 
-variable "VsFqdn" {
-  default = "myVsFqdn"
+variable "vsSsl" {
+  default = "true"
 }
 ```
 
@@ -106,4 +99,3 @@ terraform destroy -var-file=creds.tfvars.json -auto-approve
 
 ## Improvment:
 - handle list of object
-- collect IPAM info from the API (via data resource)
