@@ -50,6 +50,8 @@ avi@ansible:~/terraform/aviLscVs$
 The below variable(s) called need(s) to be adjusted:
 - poolServer1
 - poolServer2
+- dns
+- ipam
 
 The other varaiables don't need to be adjusted.
 
@@ -95,6 +97,7 @@ variable "vsSsl" {
 ## Run the terraform:
 - apply:
 ```
+terraform init
 terraform apply -var-file=creds.json -auto-approve
 ```
 - destroy:
@@ -103,4 +106,6 @@ terraform destroy -var-file=creds.json -auto-approve
 ```
 
 ## Improvment:
-- handle list of object
+- handle list of object for the server pool
+- add SE service group
+- add log and analytics capabilities

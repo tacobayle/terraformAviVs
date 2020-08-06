@@ -4,7 +4,7 @@ variable "avi_tenant" {
   default = "admin"
 }
 
-#### Health Monitor variables
+#### IPAM/DNS variables
 
 variable "dns" {
   default = "dns-avi"
