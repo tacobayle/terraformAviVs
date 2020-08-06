@@ -6,6 +6,16 @@ variable "avi_tenant" {
 
 #### Health Monitor variables
 
+variable "dns" {
+  default = "dns-avi"
+}
+
+variable "ipam" {
+  default = "ipam-avi"
+}
+
+#### Health Monitor variables
+
 variable "hmHttpName" {
   default = "tfHm1"
 }

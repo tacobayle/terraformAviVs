@@ -27,7 +27,7 @@ data "avi_networkprofile" "network_profile1" {
 }
 
 data "avi_ipamdnsproviderprofile" "dns" {
-    name = "dns-avi"
+    name = var.dns
 }
 
 output "domaineName" {
@@ -35,7 +35,7 @@ output "domaineName" {
 }
 
 data "avi_ipamdnsproviderprofile" "ipam" {
-    name = "ipam-avi"
+    name = var.ipam
 }
 
 output "networkUuid" {
