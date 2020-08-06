@@ -41,12 +41,17 @@ Avi 20.1.1 beta drop 3
 1. Make sure you have a json file with the Avi credentials like the following:
 
 ```
-avi@ansible:~/terraform/aviLscVs$ more creds.tfvars.json
+avi@ansible:~/terraform/aviLscVs$ more creds.json
 {"avi_credentials": {"username": "admin", "controller": "****", "password": "****", "api_version": "****"}}
 avi@ansible:~/terraform/aviLscVs$
 ```
 
 2. All the other paramaters/variables are stored in variables.tf. The following parameters need to be changed:
+The below variable(s) called need(s) to be adjusted:
+- poolServer1
+- poolServer2
+
+The other varaiables don't need to be adjusted.
 
 ```
 #### Pool variables
@@ -84,17 +89,17 @@ variable "vsSsl" {
 
 ## Use the the terraform script to:
 1. Create a Health Monitor
-2. Create a Pool (with 2 backend servers)
-3. Create a VS based on Avi IPAM and DNS
+2. Create a Pool (based on the Health Monitor previously created)
+3. Create a VS based on Avi IPAM and DNS and based on the pool previously created
 
 ## Run the terraform:
 - apply:
 ```
-terraform apply -var-file=creds.tfvars.json -auto-approve
+terraform apply -var-file=creds.json -auto-approve
 ```
 - destroy:
 ```
-terraform destroy -var-file=creds.tfvars.json -auto-approve
+terraform destroy -var-file=creds.json -auto-approve
 ```
 
 ## Improvment:
