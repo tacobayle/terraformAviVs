@@ -15,19 +15,17 @@ Terraform script has/have been tested against:
 ### terraform
 
 ```
-avi@ansible:~$ terraform -v
-Terraform v0.12.21
-
-Your version of Terraform is out of date! The latest version
-is 0.12.26. You can update by downloading from https://www.terraform.io/downloads.html
-avi@ansible:~$
+nic@jumphp:~/terraform/aviVs$ terraform -v
+Terraform v0.13.0
++ provider registry.terraform.io/-/avi v0.2.3
++ provider registry.terraform.io/terraform-providers/avi v0.2.3
+nic@jumphp:~/terraform/aviVs$
 ```
 
 ### Avi version
 
 ```
-Avi 18.2.9
-Avi 20.1.1 beta drop 3
+Avi 20.1.1
 ```
 
 ### Avi Environment
@@ -92,7 +90,8 @@ variable "vsSsl" {
 ## Use the the terraform script to:
 1. Create a Health Monitor
 2. Create a Pool (based on the Health Monitor previously created)
-3. Create a VS based on Avi IPAM and DNS and based on the pool previously created
+3. Create a vsvip (based on Avi IPAM and DNS)
+4. Create a VS based on the pool previously created
 
 ## Run the terraform:
 - apply:
@@ -107,38 +106,3 @@ terraform destroy -var-file=creds.json -auto-approve
 
 ## Improvment:
 - handle list of object for the server pool
-- add SE service group
-- add log and analytics capabilities
-```
-resource "avi_virtualservice" "https_vs" {
-  name                          = var.vs_name
-  pool_group_ref                = avi_poolgroup.poolgroup1.id
-  tenant_ref                    = data.avi_tenant.default_tenant.id
-  vsvip_ref                     = avi_vsvip.test_vsvip.id
-  cloud_ref                     = data.avi_cloud.default_cloud.id
-  ssl_key_and_certificate_refs  = [data.avi_sslkeyandcertificate.ssl_cert1.id]
-  ssl_profile_ref               = data.avi_sslprofile.ssl_profile1.id
-  application_profile_ref       = data.avi_applicationprofile.application_profile1.id
-  network_profile_ref           = data.avi_networkprofile.network_profile1.id
-  services {
-    port           = var.vs_port
-    enable_ssl     = true
-  }
-  analytics_policy {
-    client_insights = "NO_INSIGHTS"
-    all_headers = "false"
-    udf_log_throttle = "10"
-    significant_log_throttle = "0"
-    metrics_realtime_update {
-      enabled  = "true"
-      duration = "0"
-    }
-    full_client_logs {
-        enabled = "true"
-        throttle = "10"
-        duration = "30"
-    }
-  }
-}
-```
-- vsvip against 20.1.1
