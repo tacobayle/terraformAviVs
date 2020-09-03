@@ -50,6 +50,7 @@ The below variable(s) called need(s) to be adjusted:
 - poolServer2
 - dns
 - ipam
+- avi_cloud
 
 The other varaiables don't need to be adjusted.
 
@@ -96,8 +97,7 @@ variable "vsSsl" {
 ## Run the terraform:
 - apply:
 ```
-terraform init
-terraform apply -var-file=creds.json -auto-approve
+cd ~ ; git clone https://github.com/tacobayle/terraformAviVs ; terraform init ; terraform apply -var-file=creds.json -auto-approve
 ```
 - destroy:
 ```
