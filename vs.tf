@@ -1,6 +1,6 @@
-data "avi_cloud" "default_cloud" {
-  name = "Default-Cloud"
-}
+#data "avi_cloud" "default_cloud" {
+#  name = "Default-Cloud"
+#}
 
 data "avi_sslkeyandcertificate" "ssl_cert1" {
   name = var.vs["sslCert"]
@@ -49,6 +49,7 @@ resource "avi_pool" "lbpool" {
   name = var.pool["name"]
   tenant_ref = "/api/tenant/?name=${var.avi_tenant}"
   lb_algorithm = var.pool["lb_algorithm"]
+  cloud_ref = "/api/cloud/?name=${var.avi_cloud}"
   health_monitor_refs = ["/api/healthmonitor?name=${var.pool["poolHm"]}"]
   servers {
     ip {
@@ -69,6 +70,7 @@ resource "avi_pool" "lbpool" {
 resource "avi_vsvip" "vsvip" {
     name = "vsvip-${var.vs["name"]}"
     tenant_ref = "/api/tenant/?name=${var.avi_tenant}"
+    cloud_ref = "/api/cloud/?name=${var.avi_cloud}"
     vip {
       auto_allocate_ip = true
       ipam_network_subnet {
@@ -90,6 +92,7 @@ resource "avi_vsvip" "vsvip" {
 resource "avi_virtualservice" "https_vs" {
   name = var.vs["name"]
   pool_ref = avi_pool.lbpool.id
+  cloud_ref = "/api/cloud/?name=${var.avi_cloud}"
   tenant_ref = "/api/tenant/?name=${var.avi_tenant}"
   ssl_key_and_certificate_refs = [data.avi_sslkeyandcertificate.ssl_cert1.id]
   ssl_profile_ref = data.avi_sslprofile.ssl_profile1.id

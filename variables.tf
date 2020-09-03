@@ -4,6 +4,11 @@ variable "avi_tenant" {
   default = "admin"
 }
 
+variable "avi_cloud" {
+  default = "CloudVmw"
+}
+# Default-Cloud
+
 #### IPAM/DNS variables
 
 variable "dns" {
@@ -49,13 +54,15 @@ variable "pool" {
 
 variable "poolServer1" {
   type    = string
-  default = "172.16.3.252"
+  default = "100.64.129.30"
 }
+# "172.16.3.252"
 
 variable "poolServer2" {
   type    = string
-  default = "172.16.3.253"
+  default = "100.64.129.60"
 }
+# "172.16.3.253"
 
 #### VS variables
 
