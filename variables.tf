@@ -5,7 +5,7 @@ variable "avi_tenant" {
 }
 
 variable "avi_cloud" {
-  default = "CloudVmw"
+  default = "cloudVmw"
 }
 # Default-Cloud
 
@@ -51,17 +51,23 @@ variable "pool" {
   }
 }
 
-
-variable "poolServer1" {
-  type    = string
-  default = "100.64.129.30"
+variable "poolServers" {
+  default = [
+    {
+      ip = "100.64.130.203"
+      type = "V4"
+      port = "80"
+    },
+    {
+      ip = "100.64.130.204"
+      type = "V4"
+      port = "80"
+    }
+  ]
 }
+
+
 # "172.16.3.252"
-
-variable "poolServer2" {
-  type    = string
-  default = "100.64.129.60"
-}
 # "172.16.3.253"
 
 #### VS variables

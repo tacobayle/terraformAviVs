@@ -1,6 +1,6 @@
-#data "avi_cloud" "default_cloud" {
-#  name = "Default-Cloud"
-#}
+data "avi_cloud" "default_cloud" {
+  name = "cloudVmw"
+}
 
 data "avi_sslkeyandcertificate" "ssl_cert1" {
   name = var.vs["sslCert"]
@@ -51,19 +51,19 @@ resource "avi_pool" "lbpool" {
   lb_algorithm = var.pool["lb_algorithm"]
   cloud_ref = "/api/cloud/?name=${var.avi_cloud}"
   health_monitor_refs = ["/api/healthmonitor?name=${var.pool["poolHm"]}"]
-  servers {
-    ip {
-      type = "V4"
-      addr = var.poolServer1
+  dynamic servers {
+    for_each = [for server in var.poolServers:{
+      addr = server.ip
+      type = server.type
+      port = server.port
+    }]
+    content {
+      ip {
+        type = servers.value.type
+        addr = servers.value.addr
+      }
+      port = servers.value.port
     }
-    port = var.pool["port"]
-  }
-  servers {
-    ip {
-      type = "V4"
-      addr = var.poolServer2
-    }
-    port = var.pool["port"]
   }
 }
 

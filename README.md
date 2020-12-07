@@ -97,7 +97,7 @@ variable "vsSsl" {
 ## Run the terraform:
 - apply:
 ```
-cd ~ ; git clone https://github.com/tacobayle/terraformAviVs ; terraform init ; terraform apply -var-file=creds.json -auto-approve
+cd ~ ; git clone https://github.com/tacobayle/terraformAviVs ; cd terraformAviVs ; terraform init ; terraform apply -var-file=creds.json -auto-approve
 ```
 - destroy:
 ```
