@@ -4,9 +4,9 @@
 Configure a Health Monitor, Pool and VS through Terraform (via Avi provider)
 
 ## Prerequisites:
-1. Make sure terraform is installed
-2. Make sure your Avi Controller is reachable from your terraform host
-3. Make sure you have an IPAM/DNS profile is configured
+- TF is installed
+- Avi Controller is reachable from your terraform host
+- IPAM and DNS profiles configured in the Avi Controller
 
 ## Environment:
 
@@ -15,11 +15,11 @@ Terraform script has/have been tested against:
 ### terraform
 
 ```
-nic@jumphp:~/terraform/aviVs$ terraform -v
-Terraform v0.13.0
-+ provider registry.terraform.io/-/avi v0.2.3
+Terraform v0.13.5
 + provider registry.terraform.io/terraform-providers/avi v0.2.3
-nic@jumphp:~/terraform/aviVs$
+
+Your version of Terraform is out of date! The latest version
+is 0.14.0. You can update by downloading from https://www.terraform.io/downloads.html
 ```
 
 ### Avi version
@@ -30,7 +30,6 @@ Avi 20.1.1
 
 ### Avi Environment
 
-- LSC Cloud
 - VMware Cloud (Vsphere 6.7.0.42000) without NSX
 
 
@@ -46,47 +45,12 @@ avi@ansible:~/terraform/aviLscVs$
 
 2. All the other paramaters/variables are stored in variables.tf.
 The below variable(s) called need(s) to be adjusted:
-- poolServer1
-- poolServer2
+- poolServers
 - dns
 - ipam
 - avi_cloud
 
-The other varaiables don't need to be adjusted.
-
-```
-#### Pool variables
-
-variable "poolServer1" {
-  type    = string
-  default = "172.16.3.252"
-}
-
-variable "poolServer2" {
-  type    = string
-  default = "172.16.3.253"
-}
-
-variable "poolPort" {
-  type    = string
-  default = "80"
-}
-
-
-#### VS variables
-
-variable "vsName" {
-  default = "tfApp"
-}
-
-variable "vsP" {
-  default = "443"
-}
-
-variable "vsSsl" {
-  default = "true"
-}
-```
+The other variables don't need to be adjusted.
 
 ## Use the the terraform script to:
 1. Create a Health Monitor
@@ -103,6 +67,3 @@ cd ~ ; git clone https://github.com/tacobayle/terraformAviVs ; cd terraformAviVs
 ```
 terraform destroy -var-file=creds.json -auto-approve
 ```
-
-## Improvment:
-- handle list of object for the server pool
